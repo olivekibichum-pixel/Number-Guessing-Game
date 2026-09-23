@@ -12,12 +12,20 @@ func main() {
 
 	for {
 		var guess int
+		var difference = (guess - secretNumber)
+
 		fmt.Print("Guess a number: ")
 		fmt.Scan(&guess)
 
-		if guess == secretNumber {
+		if difference < 0 {
+			difference = -difference
+		}
+
+		if difference <= 3 {
+			fmt.Println("Warmer!")
+		} else if guess == secretNumber {
 			fmt.Println("Correct!")
-			break //stops the loop when tghe player gets the correct answer.
+			break
 		} else if guess > secretNumber {
 			fmt.Println("Too high!")
 		} else {
