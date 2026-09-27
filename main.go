@@ -6,10 +6,38 @@ import (
 )
 
 func main() {
-	fmt.Println("Welcome to the Number Guessing Game! \nThe number range is 1-100. \nTo EXIT the game, enter 0. \nHave Fun!")
+	fmt.Println("Welcome to the Number Guessing Game! \nChoose Game Level \n 1.Easy \n 2.Medium \n 3.Hard")
 
-	var secretNumber = rand.Intn(100) + 1
+	var level int
+	fmt.Println("Enter level: ")
+	fmt.Scan(&level)
 
+	var minNumber int
+	var maxNumber int
+	var warmerDifference int
+
+	if level == 1 {
+		minNumber = 1
+		maxNumber = 100
+		warmerDifference = 3
+	} else if level == 2 {
+		minNumber = 101
+		maxNumber = 999
+		warmerDifference = 10
+	} else if level == 3 {
+		minNumber = 1000
+		maxNumber = 9999
+		warmerDifference = 20
+	} else {
+		fmt.Println("Invalid level!")
+	}
+
+	var secretNumber int = rand.Intn(maxNumber-minNumber+1) - minNumber
+
+	fmt.Println("The number range is ", minNumber, "-", maxNumber)
+	fmt.Println("To EXIT the game, enter 0 \nHave Fun!")
+
+gameLoop:
 	for {
 		var guess int
 
@@ -22,19 +50,22 @@ func main() {
 			difference = -difference
 		}
 
-		if guess == 0 {
-			break
-		} else if guess > 100 {
+		switch {
+		case guess == 0:
+			fmt.Println("Exiting...")
+			break gameLoop
+		case guess < minNumber || guess > maxNumber:
 			fmt.Println("Error")
-		} else if guess == secretNumber {
+		case guess == secretNumber:
 			fmt.Println("Correct!")
-			break
-		} else if difference <= 3 {
+			break gameLoop
+		case difference <= warmerDifference:
 			fmt.Println("Warmer!")
-		} else if guess > secretNumber {
+		case guess > secretNumber:
 			fmt.Println("Too high!")
-		} else {
+		default:
 			fmt.Println("Too low!")
 		}
+
 	}
 }
